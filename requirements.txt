@@ -1,7 +1,16 @@
+<<<<<<< HEAD
 
 Flask
 pandas
 numpy
 scikit-learn
 joblib
+=======
+
+Flask
+pandas
+numpy
+scikit-learn
+joblib
+>>>>>>> 814a40f (project)
 gunicorn
