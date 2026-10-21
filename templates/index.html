@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Score Predictor</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand">Credit<span>Wise</span></div>
+        <!-- <div class="tagline">ML-powered credit risk demo</div> -->
+    </header>
+
+    <main class="container">
+        <section class="intro">
+            <p class="eyebrow">CREDIT RISK ANALYTICS</p>
+            <h1>Credit Score Prediction</h1>
+            <p>Enter the customer's model features to calculate
+               an estimated probability of default and credit score.</p>
+        </section>
+
+        <section class="panel">
+            <h2>Customer information</h2>
+            <p class="muted">Enter the feature values used during model training.</p>
+
+            <form method="POST">
+                <div class="form-grid">
+                    {% for feature in features %}
+                    <label>
+                        <span>{{ feature.replace('_', ' ') }}</span>
+                        <input
+                            type="number"
+                            name="{{ feature }}"
+                            step="any"
+                            value="{{ values.get(feature, '') }}"
+                            placeholder="Enter {{ feature.replace('_', ' ') }}"
+                            required>
+                    </label>
+                    {% endfor %}
+                </div>
+
+                <button type="submit">Predict credit score</button>
+            </form>
+
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+        </section>
+
+        {% if result %}
+        <section class="panel results">
+            <p class="eyebrow">PREDICTION RESULTS</p>
+            <div class="score-card">
+                <span>Estimated credit score</span>
+                <strong>{{ result.credit_score }}</strong>
+                <span>Score range: 300–900</span>
+            </div>
+
+            <div class="result-grid">
+                <div class="metric">
+                    <span>Probability of default</span>
+                    <strong>{{ result.pd }}%</strong>
+                </div>
+                <div class="metric">
+                    <span>Risk segment</span>
+                    <strong>{{ result.risk }}</strong>
+                </div>
+                <div class="metric">
+                    <span>Decision rule</span>
+                    <strong>{{ result.decision }}</strong>
+                </div>
+                <div class="metric">
+                    <span>Illustrative credit limit</span>
+                    <strong>₹{{ "{:,.0f}".format(result.credit_limit) }}</strong>
+                </div>
+                <div class="metric">
+                    <span>Pricing category</span>
+                    <strong>{{ result.pricing }}</strong>
+                </div>
+            </div>
+
+            <!-- <p class="disclaimer">
+                Educational project output only. This is not a real
+                lending decision or financial advice.
+            </p> -->
+        </section>
+        {% endif %}
+    </main>
+
+    <footer>CreditWise · Machine Learning Portfolio Project</footer>
+</body>
+</html>
